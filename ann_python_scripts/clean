@@ -1,0 +1,1 @@
+rm -rf *.h *.csv weights* biases* input* layer*

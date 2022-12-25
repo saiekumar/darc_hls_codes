@@ -12,3 +12,5 @@ conda create -n tf-gpu tensorflow-gpu
 remove the output files:
 ./clean
 
+
+
