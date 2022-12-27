@@ -35,11 +35,13 @@ void ann_ip::ann_load() {
         if (cfg_en) {
    
 			if (weight_cnt == ANN_WEIGHTS) {
-				ann_biases[bias_cnt] = cwb::data2float(data_in.read());
+				//ann_biases[bias_cnt] = cwb::data2float(data_in.read());
+				ann_biases[bias_cnt] = data_in.read();
 				bias_cnt = bias_cnt + 0x1;
 			}
 			else {
-				ann_weights[weight_cnt] = cwb::data2float(data_in.read());
+				//ann_weights[weight_cnt] = cwb::data2float(data_in.read());
+				ann_weights[weight_cnt] = data_in.read();
 				weight_cnt = weight_cnt + 0x1;
 			}
 		}

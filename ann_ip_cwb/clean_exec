@@ -1,0 +1,4 @@
+rm -rf ann_ip.exe
+rm -rf ann_ip.o
+rm -rf main.o
+rm -rf tb_ann.o

@@ -4,7 +4,7 @@
 	#define SC_INCLUDE_FX
 	#define SC_FX_EXCLUDE_OTHER
 	
-    #include "systemc.h"
+    #include "/home/sai/Downloads/systemc-2.3.3/include/systemc.h"
     #include "stdio.h"
 	#include "math.h"
 

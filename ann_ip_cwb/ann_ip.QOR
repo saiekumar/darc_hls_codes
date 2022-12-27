@@ -1,0 +1,330 @@
+
+Cyber Synthesis Report
+
+===========
+; Summary ;
+===========
+
+  Module Name         : ann_ip
+  Basic Library Name  : CWBSTDBLIB
+
+  FPGA Family         : zynq
+  FPGA Device         : -
+  FPGA Package        : -
+  FPGA Speed          : -
+
+  Resource Utilization
+    Slice LUTs        :      8,378
+    Registers         :      5,000
+    Block Memory Bits :    423,872
+    DSPs              :         22
+
+  Latency Index       :          1
+  Total States        :          1
+
+  Clock Period        :       10ns
+  Critical Path Delay :    2.072ns
+
+  Net                 :      2,168
+  Pin Pair            :      6,201
+
+  Port                :         47
+    In                :         36
+    Out               :         11
+
+========================
+; Resource Utilization ;
+========================
+
+  Total :
+    Slice LUTs        :      8,378
+    Registers         :      5,000
+    Block Memory Bits :    423,872
+    DSPs              :         22
+
+  ann_ip :
+    Slice LUTs        :         17
+    Registers         :         28
+    Block Memory Bits :    422,336
+    DSPs              :          0
+
+  ann_ip_ann_activate :
+    Count             :          1
+    Slice LUTs        :      7,954
+    Registers         :      4,745
+    Block Memory Bits :      1,536
+    DSPs              :         22
+
+  ann_ip_ann_load :
+    Count             :          1
+    Slice LUTs        :        407
+    Registers         :        227
+    Block Memory Bits :          0
+    DSPs              :          0
+
+===================
+; Functional Unit ;
+===================
+
+    FU Name               Slice    Reg  Delay  Pipeline  Block   Count
+                           LUTs          (ns)    Stage   Memory
+                                                         Bits
+    ------------------------------------------------------------------
+    ann_ip_ann_activate  12,699  4,745   0.00         -   1,536      1
+    ann_ip_ann_load         634    227   0.00         -       0      1
+
+  Unused Functional Units :
+    ---------------------------------------------------
+    None
+
+============
+; Register ;
+============
+
+     Used      Declared                 Used
+      Bit           Bit      Count       Bit  * Count
+    -------------------------------------------------
+        1             1          2                  2
+    -------------------------------------------------
+       10            10          1                 10
+    -------------------------------------------------
+       16            16          1                 16
+    -------------------------------------------------
+    Total                                          28
+
+===============
+; Multiplexer ;
+===============
+
+   1 bit:  2way: 2 ,  3way: 1 
+  10 bit:  3way: 1 
+  16 bit:  2way: 2 
+   Total : 101 (# of Fanins)
+
+===========
+; Decoder ;
+===========
+
+    None
+
+==========
+; Memory ;
+==========
+
+                                                               Block         (shared/
+                                                               Memory         outside)
+    Name                   Type   Kind     Bit  Word  Area     Bits    Count  Count
+    ----------------------------------------------------------------------------------
+    MEMB8W784              BLOCK  R1,W1      8   784     -      6,272      1      0
+    MEMB32W12960           BLOCK  R1,W1     32 12,960     -    414,720      1      0
+    MEMB32W42              BLOCK  R1,W1     32    42     -      1,344      1      0
+
+===========
+; Latency ;
+===========
+
+    Total:
+        Type          : S
+        Latency       : 1
+        Latency Index : 1
+        State No.     : 1
+        Folding Loop  : -
+        Folding Stages: - , Total Folding States: - , Hazard: -
+        User Operator : -
+        Sub Loops     : -
+        Line          : ann_ip.h:8
+
+=======
+; FSM ;
+=======
+
+  Total States      :          1
+  #FSM              :          0
+  States/FSM        :          -
+  FSM Decoder Delay :          -
+
+=========
+; Delay ;
+=========
+
+  Clock Period        :       10ns
+  Critical Path Delay :    2.072ns
+
+              Subtotal
+      Class       (ns)    Ratio
+      -------------------------
+      IN           0.00      0%
+      FU           0.00      0%
+      MUX          2.07    100%
+      DEC          0.00      0%
+      MISC         0.00      0%
+      MEM          0.00      0%
+      -------------------------
+      Total        2.07
+
+    Combinational Loop detected. See *.FPI file.
+
+    Path: #1
+                                                                Arrival
+                                                          Delay    Time Logic
+      Name                 / Port [Signal              ]   (ns)   (ns)  Stage
+      -----------------------------------------------------------------------
+      pix_cnt_r            / dout [                    ]      -    0.00     0
+      _NMUX_127            / o1   [pix_cnt             ]   1.04    1.04     1
+      ann_activate_inst    / o12  [ann_activate_inst.ann_processing_done_we]   0.00    1.04     1
+      _NMUX_120            / o1   [ann_processing_done ]   1.04    2.07     2
+      ann_processing_done_r / din  [                    ]      -    2.07     2
+
+  False Path                    :  Unchecked
+  Multi Cycle Path              :  Unchecked
+  False Loop/Combinational Loop :    Unknown
+  Latch (bit)                   :          0
+
+========
+; Wire ;
+========
+
+  Total Net Count      :    2,168
+  Total Pin Pair Count :    6,201
+  Const Fanout         :        0
+
+  Net Count :
+         Bit       Net    Bit*Net
+     ----------------------------
+           1        17         17
+           6         2         12
+           8         2         16
+          10         5         50
+          14         2         28
+          16         3         48
+          32         5        160
+     ----------------------------
+       Total                  331
+
+  Pin Pair Count :
+      Fanout    Bit    Count   Subtotal
+    -----------------------------------
+          12      1        1         12
+           6      1        1          6
+           3     16        1         48
+           2     10        1         20
+           2      1        2          4
+           1     32        5        160
+           1     16        2         32
+           1     14        2         28
+           1     10        4         40
+           1      8        2         16
+           1      6        2         12
+           1      1       13         13
+    -----------------------------------
+       Total                        391
+
+  Fanout for Consts:
+      Value    Fanout
+          0         0
+          1         0
+    ------------------
+      Total         0
+
+  Clock Fanout:
+      Name                         Count
+      ----------------------------------
+      clk(0..0)                       12
+
+  Reset Fanout:
+      Name                         Count
+      ----------------------------------
+      rst(0..0)                        6
+
+  Register Fanin/Fanout Cone Size:
+
+    Fanin: (Top 10 Registers)
+      Register Name                              Cone Size
+      ----------------------------------------------------
+      ann_out_r(9..0)                                   10
+      ann_op_en_r(0..0)                                 10
+      ann_processing_done_r(0..0)                       10
+      pix_cnt_r(15..0)                                   6
+
+    Fanout: (Top 10 Registers)
+      Register Name                              Cone Size
+      ----------------------------------------------------
+      pix_cnt_r(15..0)                                   7
+      ann_out_r(9..0)                                    2
+      ann_op_en_r(0..0)                                  2
+      ann_processing_done_r(0..0)                        1
+
+  Routability:
+
+    Top 25 Nets
+    sorted by "Total" (Total Pin Pair)
+      Net Name                                    Total      Max
+      -----------------------------------------------------------------
+      pix_cnt(15..0)                                 48        3 (16bit)
+      data_in(31..0)                                 32        1 (32bit)
+      ann_weights.RD1(31..0)                         32        1 (32bit)
+      ann_biases.RD1(31..0)                          32        1 (32bit)
+      ann_load_inst.ann_weights_MEMB32W12960_WD2(31..0)       32        1 (32bit)
+      ann_load_inst.ann_biases_MEMB32W42_WD2(31..0)       32        1 (32bit)
+      ann_out_r(9..0)                                20        2 (10bit)
+      ann_load_inst.pix_cnt_wd(15..0)                16        1 (16bit)
+      pix_cnt_r(15..0)                               16        1 (16bit)
+      ann_load_inst.ann_weights_MEMB32W12960_WA2(13..0)       14        1 (14bit)
+      ann_activate_inst.ann_weights_MEMB32W12960_RA1(13..0)       14        1 (14bit)
+      clk(0..0)                                      12       12 ( 1bit)
+      ann_activate_inst.ann_out_wd(9..0)             10        1 (10bit)
+      ann_load_inst.pix_in_MEMB8W784_WA2(9..0)       10        1 (10bit)
+      ann_activate_inst.pix_in_MEMB8W784_RA1(9..0)       10        1 (10bit)
+      _NMUX_82(9..0)                                 10        1 (10bit)
+      pix_in.RD1(7..0)                                8        1 ( 8bit)
+      ann_load_inst.pix_in_MEMB8W784_WD2(7..0)        8        1 ( 8bit)
+      rst(0..0)                                       6        6 ( 1bit)
+      ann_load_inst.ann_biases_MEMB32W42_WA2(5..0)        6        1 ( 6bit)
+      ann_activate_inst.ann_biases_MEMB32W42_RA1(5..0)        6        1 ( 6bit)
+      ann_processing_done(0..0)                       2        2 ( 1bit)
+      ann_op_en_r(0..0)                               2        2 ( 1bit)
+      pix_en(0..0)                                    1        1 ( 1bit)
+      cfg_en(0..0)                                    1        1 ( 1bit)
+
+    Top 25 Nets
+    sorted by "Max" (Maximum Fanout)
+      Net Name                                    Total      Max
+      -----------------------------------------------------------------
+      clk(0..0)                                      12       12 ( 1bit)
+      rst(0..0)                                       6        6 ( 1bit)
+      pix_cnt(15..0)                                 48        3 (16bit)
+      ann_out_r(9..0)                                20        2 (10bit)
+      ann_processing_done(0..0)                       2        2 ( 1bit)
+      ann_op_en_r(0..0)                               2        2 ( 1bit)
+      data_in(31..0)                                 32        1 (32bit)
+      ann_weights.RD1(31..0)                         32        1 (32bit)
+      ann_biases.RD1(31..0)                          32        1 (32bit)
+      ann_load_inst.ann_weights_MEMB32W12960_WD2(31..0)       32        1 (32bit)
+      ann_load_inst.ann_biases_MEMB32W42_WD2(31..0)       32        1 (32bit)
+      ann_load_inst.pix_cnt_wd(15..0)                16        1 (16bit)
+      pix_cnt_r(15..0)                               16        1 (16bit)
+      ann_load_inst.ann_weights_MEMB32W12960_WA2(13..0)       14        1 (14bit)
+      ann_activate_inst.ann_weights_MEMB32W12960_RA1(13..0)       14        1 (14bit)
+      ann_activate_inst.ann_out_wd(9..0)             10        1 (10bit)
+      ann_load_inst.pix_in_MEMB8W784_WA2(9..0)       10        1 (10bit)
+      ann_activate_inst.pix_in_MEMB8W784_RA1(9..0)       10        1 (10bit)
+      _NMUX_82(9..0)                                 10        1 (10bit)
+      pix_in.RD1(7..0)                                8        1 ( 8bit)
+      ann_load_inst.pix_in_MEMB8W784_WD2(7..0)        8        1 ( 8bit)
+      ann_load_inst.ann_biases_MEMB32W42_WA2(5..0)        6        1 ( 6bit)
+      ann_activate_inst.ann_biases_MEMB32W42_RA1(5..0)        6        1 ( 6bit)
+      pix_en(0..0)                                    1        1 ( 1bit)
+      cfg_en(0..0)                                    1        1 ( 1bit)
+
+================
+; Primary Port ;
+================
+
+    Name               Type   Bitw
+    ------------------------------
+      data_in           in     32
+      pix_en            in      1
+      cfg_en            in      1
+      ann_out           out    10
+      ann_op_en         out     1
+
