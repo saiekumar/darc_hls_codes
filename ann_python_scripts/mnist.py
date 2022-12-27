@@ -48,7 +48,7 @@ deci_acc_biases = int(sys.argv[11])							# decimal accuracy
 np.set_printoptions(threshold=10000000000)				# for printing all the values 
 
 # Load MNIST handwritten digit data
-(X_train, y_train), (X_test, y_test) = mnist.load_data()
+(X_train, Y_train), (X_test, Y_test) = mnist.load_data()
 
 
 image_no = 1
@@ -62,13 +62,13 @@ X_test = X_test.astype(np.float32) / 255.0
 
 # Convert y_train into one-hot format
 temp = []
-for i in range(len(y_train)):
-    temp.append(to_categorical(y_train[i], num_classes=10))
+for i in range(len(Y_train)):
+    temp.append(to_categorical(Y_train[i], num_classes=10))
 y_train = np.array(temp)
 
 temp = []
-for i in range(len(y_test)):    
-    temp.append(to_categorical(y_test[i], num_classes=10))
+for i in range(len(Y_test)):    
+    temp.append(to_categorical(Y_test[i], num_classes=10))
 y_test = np.array(temp)
 
 
@@ -81,11 +81,10 @@ for i in range(len(X_test)):
 		for x in range(len(img)):			
 			print(img[x], file=f1)
 	
-	oup = y_test[i].flatten()
-	oupname = "oup" + str(i) + ".txt"
-	with open(oupname, 'w') as f2:
-		for x in range(len(oup)):			
-			print(oup[x], file=f2)
+	oup = Y_test[i]
+	with open("outputs.txt", 'a') as f2:
+		oupname = "image" + str(i) + " - " + str(oup)
+		print(oupname , file=f2)
 
 
 	if (i == 100):

@@ -39,7 +39,7 @@ def BuildANN():
     os.system('mv biases.h outputs/biases.h')
     os.system('mv weights.h outputs/weights.h')
     os.system('mv image* outputs/.')
-    os.system('mv oup*   outputs/.')
+    os.system('mv outputs.txt  outputs/.')
 
 
 helpMenu()
