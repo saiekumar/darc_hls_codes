@@ -86,6 +86,10 @@ for i in range(len(X_test)):
 			print(img[x], file=f3)
 	
 	oup = Y_test[i]
+	opname = "output" + str(i) + ".txt"
+	with open(opname, 'w') as f4:
+		print(oup, file=f4)
+
 	with open("outputs.txt", 'a') as f2:
 		print(oup , file=f2)
 
