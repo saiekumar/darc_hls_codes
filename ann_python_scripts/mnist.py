@@ -15,21 +15,19 @@ from keras.models import Model
 
 
 def sigmoid(X):
-   #return 1/(1+np.exp(-X))
    return 1.0 / (1.0 + np.exp(-X))
 
-
-'''
-def sigmoid(x):
-    return 1.0 / (1.0 + np.exp(-x))
-'''
-   
 # calculate the softmax of a vector
 def softmax(X):
 	e = np.exp(X - max(X))	#to avoid getting 'nan' as exponential of large values blows up
 	return e / e.sum()
 	
-	  
+
+
+
+
+
+
 ##### Creating Neural Network Model
 hidden_layers = int(sys.argv[1]) 
 layer_neurons = sys.argv[2].split(',')
@@ -55,22 +53,6 @@ np.set_printoptions(threshold=10000000000)				# for printing all the values
 
 image_no = 1
 
-'''
-#shapes
-X_train (60000, 28, 28)
-y_train (60000,)
-X_test (10000, 28, 28)
-y_test (10000,)
-'''
-
-#img1 = X_train[0].flatten()
-img1 = X_train[image_no].flatten()
-
-#784 pixels, and each pixel value is between 0 to 255
-with open("input_image.txt", 'w') as f:					
-	for x in range(len(img1)):			
-		print(img1[x], file=f)
-
 
 # Normalize the input image so that each pixel value is between 0 to 1.
 # Training is done with normalised image
@@ -79,40 +61,37 @@ X_test = X_test.astype(np.float32) / 255.0
 
 
 # Convert y_train into one-hot format
-# what is this one-hot format?
 temp = []
 for i in range(len(y_train)):
     temp.append(to_categorical(y_train[i], num_classes=10))
 y_train = np.array(temp)
-# Convert y_test into one-hot format
+
 temp = []
 for i in range(len(y_test)):    
     temp.append(to_categorical(y_test[i], num_classes=10))
 y_test = np.array(temp)
 
 
-#print(X_train[0]) #one 28x28 image
-#print (type(X_train[0])) #numpy array
 
-#img = X_train[0].flatten()
-img = X_train[image_no].flatten()
-print(img)
-#print(len(img))
-#quit()
+# Dump the test images and test outputs into the files
+for i in range(len(X_test)):
+	img = X_test[i].flatten()
+	imgname = "image" + str(i) + ".txt"
+	with open(imgname, 'w') as f1:
+		for x in range(len(img)):			
+			print(img[x], file=f1)
+	
+	oup = y_test[i].flatten()
+	oupname = "oup" + str(i) + ".txt"
+	with open(oupname, 'w') as f2:
+		for x in range(len(oup)):			
+			print(oup[x], file=f2)
 
-#784 pixels, and each pixel value is between 0 to 1
-#considering the first image in dataset, so this pixel values not going to change
-with open("input_image_normalised.txt", 'w') as f:					
-	for x in range(len(img)):			
-		#print(img[x], ',', end = ' ', file=f)
-		print(img[x], file=f)
 
-'''
-print(X_train)
-print(y_train) 
-print(X_test)
-print(y_test)
-'''
+	if (i == 100):
+		break
+
+
 
 # Create simple Neural Network model
 model = Sequential()
@@ -124,8 +103,6 @@ for i in range(hidden_layers):
 model.add(Dense(output_neurons, activation = af_output))			# output layer #here we decide the activation function of output layer
 
 model.summary()
-#quit()
-
 
 model.compile(loss = loss_function, 
               optimizer = optimizer_function,
@@ -135,20 +112,69 @@ model.fit(X_train, y_train, epochs = epoch_count, 				#trains the model for a fi
           validation_data=(X_test,y_test))
           
 
-'''          
+#model done training
+#Tensor Flow model generated
+#print(model.get_layer("dense"))
+
+'''
 #predicting the digit after training the model
 pred = model.predict(X_train[2].reshape(1, 28, 28, 1))
 print(pred.argmax())
 quit()
 '''
 
+weights = []
+biases = []
 
-#model done training
-#Tensor Flow model generated
-
-#print(model.get_layer("dense"))
+index_wgts = 0
+index_bias = 0
 
 
+##### extracting weights and biases for the first hidden layer
+for i in range(1, hidden_layers+2):
+
+    weights.append(model.layers[i].get_weights()[0]) 				
+    biases.append(model.layers[i].get_weights()[1])
+
+    weights[i-1] = np.round(weights[i-1], decimals = deci_acc_weights)
+    biases[i-1] = np.round(biases[i-1], decimals = deci_acc_biases)
+
+    DF = pd.DataFrame(weights[i-1])
+    DF.to_csv("weights_" +str(i) + ".csv", header=False, index=False)
+
+    DF = pd.DataFrame(biases[i-1])
+    DF.to_csv("biases_" +str(i) + ".csv", header=False, index=False)
+
+    lib = open("weights_" +str(i) + ".csv","r")
+    text=lib.read().strip().split("\n")
+    lib.close()
+
+    with open("weights.h", 'a') as f:				
+        for line in text:
+            number_list = line.split(",")
+            for x in range(len(number_list)):
+                print("ann_weights[" + str(index_wgts) +"]	=	" + number_list[x] + ";", file = f)
+                index_wgts = index_wgts + 1;
+
+    lib = open("biases_" +str(i) + ".csv","r")
+    text=lib.read().strip().split("\n")	#whole lib is stored in text
+    lib.close()
+	
+    with open("biases.h", 'a') as f:				
+        for line in text:
+            print("ann_biases[" + str(index_bias) +"]	=	" + line + ";" , file = f)
+            index_bias = index_bias + 1;
+			
+			
+
+exit()
+
+
+
+
+
+
+##### writing weights and biases of first hidden layer to file
 #clearing files, before appending
 with open("layer_outputs.txt", 'w') as f:								
 	pass
@@ -239,138 +265,5 @@ for i in range(1, len(model.layers)):
 print (layer_outputs)
 quit()
 '''
-
 #print(type(model.layers[1].output)) # keras tensor type
 #quit()
-
-#writing weights and biases to file before quantization
-
-weights = []					#3 elements
-biases = []
-
-allw = []
-allb = []
-
-for i in range(1, hidden_layers+2):							#hidden layer = 2
-									#model.layers[1] -> first hidden layer,   model.layers[2] -> second hidden layer, model.layers[3] -> output layer
-##### extracting weights and biases for the first hidden layer
-	
-	weights.append(model.layers[i].get_weights()[0]) 				
-	biases.append(model.layers[i].get_weights()[1])
-					
-	#print(len(weights), len(biases))
-
-##### writing weights and biases of first hidden layer to file
-
-for i in range(1, hidden_layers+2):
-	#print(len(weights), len(biases))
-	weights[i-1] = np.round(weights[i-1], decimals = deci_acc_weights)
-	with open("weights_" +str(i) + ".txt", 'w') as f:				#writing to file just to confirm values are correct in csv file
-    		print(weights[i-1], file=f)
-
-	DF = pd.DataFrame(weights[i-1])
-	DF.to_csv("weights_" +str(i) + ".csv", header=False, index=False)    	#if header/index is set true, they'll also be present in csv file
-
-
-	biases[i-1] = np.round(biases[i-1], decimals = deci_acc_biases)
-
-	DF = pd.DataFrame(biases[i-1])
-	DF.to_csv("biases_" +str(i) + ".csv", header=False, index=False)
-	
-	############################################
-	#maybe we can use weights and biases as such without performing quantization?
-	
-	'''
-	print (biases[i-1])
-	print (type(biases[i-1]))
-	
-	b = np.round(biases[i-1], decimals = deci_acc_biases)
-	b = b.T.tolist()
-	allb.append(b)
-	print(allb)
-	
-	w = np.round(weights[i-1], decimals = deci_acc_weights)
-	w = w.T.tolist()
-	allw.append(w)
-	'''
-	
-	b = np.round(biases[i-1], decimals = deci_acc_biases)
-	allb.extend(b)
-	
-	w = np.round(weights[i-1], decimals = deci_acc_weights)
-	allw.extend(w)
-	
-	#writing the csv file with weights/biases of multiple layers
-	if(i == hidden_layers+1): #we are only considering two layers for now
-		DF = pd.DataFrame(allw)
-		DF.to_csv("allweights.csv", header=False, index=False) 	 #wrong here itself
-		
-		DF = pd.DataFrame(allb)
-		DF.to_csv("allbiases.csv", header=False, index=False) 
-		
-	
-
-	#formatting the weights and biases as required by HLS tool
-	lib = open("weights_" +str(i) + ".csv","r")
-	text=lib.read().strip().split("\n")	#whole lib is stored in text
-	lib.close()	
-	
-	index = 0
-	with open("weights_" + str(i) +"_formatted" + ".h", 'w') as f:				
-		for line in text:
-			number_list = line.split(",")
-			for x in range(len(number_list)):
-				print("ann_weights[" + str(index) +"]	=	" + number_list[x] + ";", file = f)
-				index = index + 1;
-
-
-	lib = open("biases_" +str(i) + ".csv","r")
-	text=lib.read().strip().split("\n")	#whole lib is stored in text
-	lib.close()
-	
-	index = 0
-	with open("biases_" + str(i) +"_formatted" + ".h", 'w') as f:				
-		for line in text:
-			print("ann_biases[" + str(index) +"]	=	" + line + ";" , file = f)
-			index = index + 1;
-			
-			
-	if(i == hidden_layers+1): #we are only considering two layers for now
-		lib = open("allweights.csv","r")
-		text=lib.read().strip().split("\n")	#whole lib is stored in text
-		lib.close()	
-		
-		index = 0
-		with open("allweights_formatted" + ".h", 'w') as f:				
-			for line in text:
-				number_list = line.split(",")
-				for x in range(len(number_list)):
-					if(len(number_list[x]) == 0):
-						continue
-					print("ann_weights[" + str(index) +"]	=	" + number_list[x] + ";", file = f)
-					index = index + 1;
-					
-		lib = open("allbiases.csv","r")
-		text=lib.read().strip().split("\n")	#whole lib is stored in text
-		lib.close()	
-		
-		index = 0
-		with open("allbiases_formatted" + ".h", 'w') as f:				
-			for line in text:
-				number_list = line.split(",")
-				for x in range(len(number_list)):
-					print("ann_biases[" + str(index) +"]	=	" + number_list[x] + ";", file = f)
-					index = index + 1;			
-	
-	
-	
-
-	
-
-
-
-
-
-
-
-
