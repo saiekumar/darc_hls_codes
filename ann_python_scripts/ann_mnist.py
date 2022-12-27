@@ -36,10 +36,10 @@ def checkInfile():
 def BuildANN():
     cmd = 'python mnist.py '+nhiddenlayers+' '+ ','.join(nlayer)+' '+noutputlayer+' '+ ','.join(aflayer)+' '+afoutputlayer+' '+lossfunc+' '+optimizer+' '+metrics+' '+nepochs+' '+deci_weights+' '+deci_biases+' '
     os.system(cmd)
-    os.system('mv allbiases_formatted.h outputs/.')
-    os.system('mv allweights_formatted.h outputs/.')
-    os.system('mv input_image.txt outputs/.')
-    os.system('mv input_image_normalised.txt outputs/.')
+    os.system('mv allbiases_formatted.h outputs/biases.h')
+    os.system('mv allweights_formatted.h outputs/weights.h')
+    #os.system('mv input_image.txt outputs/.')
+    os.system('mv input_image_normalised.txt outputs/image.txt')
 
 
 helpMenu()
