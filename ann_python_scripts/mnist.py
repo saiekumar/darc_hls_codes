@@ -80,11 +80,14 @@ for i in range(len(X_test)):
 	with open(imgname, 'w') as f1:
 		for x in range(len(img)):			
 			print(img[x], file=f1)
+
+	with open("images.txt", 'a') as f3:
+		for x in range(len(img)):			
+			print(img[x], file=f3)
 	
 	oup = Y_test[i]
 	with open("outputs.txt", 'a') as f2:
-		oupname = "image" + str(i) + " - " + str(oup)
-		print(oupname , file=f2)
+		print(oup , file=f2)
 
 
 	if (i == 100):
