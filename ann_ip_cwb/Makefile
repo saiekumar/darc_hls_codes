@@ -1,16 +1,11 @@
 #=============================================================================
 #
 # File Name    : Makefile
-# Description  : Makefile for Bubble sort
-# Release Date : 16/07/2013
-# Author       : PolYU
-#
-# Note         : Edit SYSTEMC_HOME path
 # Revision History
 #---------------------------------------------------------------------------
-# Date       Author      	Version     Description
+# Date           Author      	Version     		Description
 #---------------------------------------------------------------------------
-# 16/17/13   PolyU DARC lab     1.0         Initial makefile for Bubble sort
+# 12/25/2022    Sai Marri         1.0         	Initial makefile
 #============================================================================
 
 pars : 
