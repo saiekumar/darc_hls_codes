@@ -25,7 +25,7 @@ SC_MODULE (ann_ip) {
 	float 							ann_weights[ANN_WEIGHTS] 		            /* Cyber array = RAM, immediate_access = RW, packed */;
 	float 							ann_biases[ANN_BIASES] 			            /* Cyber array = RAM, immediate_access = RW, packed */;
 
-	sc_fixed<32,8> 					pix_in[INP_NEURONS];						//TODO : should we enable cyber array = RAM
+	float 							pix_in[INP_NEURONS] 						/* Cyber array = RAM, immediate_access = RW, packed */;
 
 	sc_uint < 1 >					ann_configure_done;
     sc_uint < 1 >                   pix_loading_done;

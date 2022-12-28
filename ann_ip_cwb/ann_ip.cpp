@@ -51,7 +51,7 @@ void ann_ip::ann_load() {
 		// Load the pixels
         else if (pix_en) {
 			
-			pix_in[pix_cnt] = data_in.read();
+			pix_in[pix_cnt] = (double)data_in.read();
 			pix_cnt = pix_cnt + 1;
 			pix_loading_done = 0x0;
 		}
@@ -69,10 +69,10 @@ void ann_ip::ann_activate() {
 	int 	bias_offset   	= 0x0;
 	int 	weight_offset 	= 0x0;
 	int 	ann_oup			= 0x0;
-	float 	softmax_sum 	= 0;
-	float 	max_p 			= 0;
 
-    sc_fixed<128,96>	ann_act[ANN_TOTAL_LAYERS][MAX_NEURONS];
+	double 	softmax_sum 	= 0;
+	double 	max_p 			= 0;
+    double  ann_act[ANN_TOTAL_LAYERS][MAX_NEURONS];
 
 	for (int i = 0; i < OUP_NEURONS; i = i + 1) {
 		ann_out.write(0);
