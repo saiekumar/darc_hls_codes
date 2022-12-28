@@ -9,6 +9,8 @@
 #============================================================================
 
 pars : 
+	cp ../ann_python_scripts/outputs/biases.h   .
+	cp ../ann_python_scripts/outputs/weights.h  .
 	scpars -EE   -info_base_name scpars  "ann_ip.cpp"
 
 gen_scripts :
@@ -33,18 +35,33 @@ cwb :
 
 
 exec :
+	cp ../ann_python_scripts/outputs/biases.h   .
+	cp ../ann_python_scripts/outputs/weights.h  .
 	g++ -pthread -O1 -I"/home/sai/Downloads/systemc-2.3.3/include/" -I"." -c ann_ip.cpp -o ann_ip.o
 	g++ -pthread -O1 -I"/home/sai/Downloads/systemc-2.3.3/include/" -I"." -c main.cpp -o main.o
 	g++ -pthread -O1 -I"/home/sai/Downloads/systemc-2.3.3/include/" -I"." -c tb_ann.cpp -o tb_ann.o
 	g++ -pthread -o "ann_ip.exe"  ann_ip.o main.o tb_ann.o -lm "/home/sai/Downloads/systemc-2.3.3/lib-linux64/libsystemc.a"  -Wl,-rpath="/home/sai/Downloads/systemc-2.3.3/lib-linux64/libsystemc-2.3.3.so"
+
+
+sim :
+	./ann_exec.sh | tee log
+
+
+
+clean_sim : 
+	rm -rf image*.txt
+	rm -rf output*.txt
+	rm -rf log
 
 clean_exec : 
 	rm -rf ann_ip.exe
 	rm -rf ann_ip.o
 	rm -rf main.o
 	rm -rf tb_ann.o
+	rm -rf weights.h
+	rm -rf biases.h
 
-clean_synth :
+clean_cwb :
 	rm -rf  ann_ip-auto*
 	rm -rf  ann_ip.err
 	rm -rf  ann_ip.LMSPEC
@@ -65,3 +82,10 @@ clean_synth :
 	rm -rf  *.CSV
 	rm -rf  *.xml
 	rm -rf  ann_ip_ann_*
+	rm -rf weights.h
+	rm -rf biases.h
+
+clean:
+	make clean_cwb
+	make clean_exec
+	make clean_sim

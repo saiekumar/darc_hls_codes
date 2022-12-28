@@ -11,9 +11,9 @@ int sc_main(int argc, char** argv)
  	sc_clock                clk("clk", 25, SC_NS, 0.5, 12.5, SC_NS, true);
  	sc_signal<bool>         rst;
 
- 	sc_signal<bool>  			pix_en;
- 	sc_signal<bool>  			cfg_en;
- 	sc_signal<sc_uint<32> > 	data_in;
+ 	sc_signal<bool>  				pix_en;
+ 	sc_signal<bool>  				cfg_en;
+ 	sc_signal< sc_fixed<32,8> > 	data_in;
 
     sc_signal< sc_uint<OUP_NEURONS> >  ann_out;
     sc_signal< bool >				   ann_op_en;

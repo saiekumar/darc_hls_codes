@@ -12,7 +12,7 @@ SC_MODULE (tb_ANN){
   sc_in<bool>          	rst;
 
   //  Data in
-  sc_out< sc_uint<32> >  		data_in;
+  sc_out< sc_fixed<32,8> >		data_in;
   sc_out< bool >				pix_en;
   sc_out< bool >				cfg_en;
 
