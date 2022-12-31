@@ -19,7 +19,7 @@ void dma_ctlr::dma_trans() {
 			for( i = 0; i < dma_chan_transfer_len[0]; i = i + 2) {
 				rd_addr = dma_chan_src_addr[0] + i;
 				dma_buff[0] = MA.single_read(rd_addr);
-				//MA.cburst_write(rd_addr, dma_buff, INCR4);
+				//MA.cburst_read(rd_addr, dma_buff, INCR4);
 				//MA.burst_read(rd_addr, dma_buff, 4);
 				wait();
 
