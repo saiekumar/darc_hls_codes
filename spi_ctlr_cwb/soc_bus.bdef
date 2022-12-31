@@ -1,0 +1,21 @@
+defbus AMBA_AHB {
+	width address 		= 16;
+	width data 			= 16;
+	mode arbiter_rule 	= RoundRobin;
+	module master 		= {MA};
+	module slave 		= {SA};
+} bus;
+
+
+module AMBA_AHB_MASTER {
+	mode burst 			= Enable;
+	mode data_transfer 	= Direct;
+	mode clock 			= Enable;
+	mode reset 			= Enable;
+} MA;
+
+
+module AMBA_AHB_SLAVE {
+	map address 	= 0x0000-0x00ff & 0xffff;
+	mode burst 		= Disable;
+} SA;
