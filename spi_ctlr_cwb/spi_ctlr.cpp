@@ -11,12 +11,13 @@ void spi_ctlr::spi_clock_gen() {
 
 	while(true) {
 		if(spi_cs.read() == 0) {
-			clk_polarity = ~spi_clk.read();
+			clk_polarity = ~clk_polarity;
 			spi_clk.write(clk_polarity);
 			wait();
 		}
 		else {
 			spi_clk.write(0x0);
+			wait();
 		}
 	}
 }
@@ -50,13 +51,10 @@ void spi_ctlr::spi_trans() {
     SPI_SA.poll_req(&stat);    /* get status */
 
 
-
     while(true){
-        wait();
 
         if (stat.req == CBM_READ_REQ) {
-         	SPI_SA.set_response(CBM_OKAY);
-
+			SPI_SA.set_response(CBM_BUSY);
 			spi_addr = stat.addr.range(15,0);
 			
 			spi_cs.write(0x0);
@@ -68,8 +66,10 @@ void spi_ctlr::spi_trans() {
 				spi_mosi1.write(0x0);
 				spi_mosi2.write(0x0);
 				spi_mosi3.write(0x0);
-				wait();
-				wait();
+				SPI_SA.set_response(CBM_BUSY);
+				wait(1);
+				SPI_SA.set_response(CBM_BUSY);
+				wait(1);
 			}
 
 			/* transmitting SPI addr */
@@ -78,13 +78,17 @@ void spi_ctlr::spi_trans() {
 				spi_mosi2.write(spi_addr[i-2]);
 				spi_mosi1.write(spi_addr[i-3]);
 				spi_mosi0.write(spi_addr[i-4]);
-				wait();
-				wait();
+				SPI_SA.set_response(CBM_BUSY);
+				wait(1);
+				SPI_SA.set_response(CBM_BUSY);
+				wait(1);
 			}
 
 			/* one Dummy Cycle */
-			wait();
-			wait();
+			SPI_SA.set_response(CBM_BUSY);
+			wait(1);
+			SPI_SA.set_response(CBM_BUSY);
+			wait(1);
 
 			/* receiving the SPI data */
 			for( i = 16; i > 0; i = i - 4) {
@@ -92,23 +96,25 @@ void spi_ctlr::spi_trans() {
 				spi_data[i-2] = spi_miso2.read();
 				spi_data[i-3] = spi_miso1.read();
 				spi_data[i-4] = spi_miso0.read();
-				wait();
-				wait();
+				SPI_SA.set_response(CBM_BUSY);
+				wait(1);
+				SPI_SA.set_response(CBM_BUSY);
+				wait(1);			
 			}
 
 			spi_cs.write(0x1);
        		SPI_SA.put_data(spi_data);
+			SPI_SA.set_response(CBM_OKAY);
+			wait();
    		}
 
         else if (stat.req == CBM_WRITE_REQ) {
-            SPI_SA.set_response(CBM_OKAY);
-
+			SPI_SA.set_response(CBM_BUSY);
 			spi_addr = stat.addr.range(15,0);
 			spi_data = SPI_SA.get_data()(15,0);
 			
 			spi_cs.write(0x0);
 			wait();
-
 
 			/* transmitting SPI command */
 			for( i = 8; i > 0; i = i - 1) {
@@ -116,8 +122,10 @@ void spi_ctlr::spi_trans() {
 				spi_mosi1.write(0x0);
 				spi_mosi2.write(0x0);
 				spi_mosi3.write(0x0);
-				wait();
-				wait();
+				SPI_SA.set_response(CBM_BUSY);
+				wait(1);
+				SPI_SA.set_response(CBM_BUSY);
+				wait(1);
 			}
 
 			/* transmitting SPI addr */
@@ -126,13 +134,17 @@ void spi_ctlr::spi_trans() {
 				spi_mosi2.write(spi_addr[i-2]);
 				spi_mosi1.write(spi_addr[i-3]);
 				spi_mosi0.write(spi_addr[i-4]);
-				wait();
-				wait();
+				SPI_SA.set_response(CBM_BUSY);
+				wait(1);
+				SPI_SA.set_response(CBM_BUSY);
+				wait(1);
 			}
 
 			/* one Dummy Cycle */
-			wait();
-			wait();
+			SPI_SA.set_response(CBM_BUSY);
+			wait(1);
+			SPI_SA.set_response(CBM_BUSY);
+			wait(1);
 
 			/* transmitting the SPI data */
 			for( i = 16; i > 0; i = i - 4) {
@@ -140,13 +152,19 @@ void spi_ctlr::spi_trans() {
 				spi_mosi2.write(spi_data[i-2]);
 				spi_mosi1.write(spi_data[i-3]);
 				spi_mosi0.write(spi_data[i-4]);
-				wait();
-				wait();
+				SPI_SA.set_response(CBM_BUSY);
+				wait(1);
+				SPI_SA.set_response(CBM_BUSY);
+				wait(1);
 			}
 
 			spi_cs.write(0x1);
+			SPI_SA.set_response(CBM_OKAY);
+			wait();
        	}
-
-		SPI_SA.poll_req(&stat); /* get status */
+		else {
+			wait();
+			SPI_SA.poll_req(&stat); /* get status */
+		}
 	}
 }
