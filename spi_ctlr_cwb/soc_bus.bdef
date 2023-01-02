@@ -3,7 +3,7 @@ defbus AMBA_AHB {
 	width data 			= 16;
 	mode arbiter_rule 	= RoundRobin;
 	module master 		= {MA};
-	module slave 		= {SA};
+	module slave 		= {SPI_SA};
 } bus;
 
 
@@ -17,5 +17,5 @@ module AMBA_AHB_MASTER {
 
 module AMBA_AHB_SLAVE {
 	map address 	= 0x0000-0x00ff & 0xffff;
-	mode burst 		= Disable;
-} SA;
+	mode burst 		= Enable;
+} SPI_SA;
