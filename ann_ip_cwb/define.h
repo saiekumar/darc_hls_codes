@@ -5,6 +5,7 @@
 	#define SC_FX_EXCLUDE_OTHER
 	
     #include "/home/sai/Downloads/systemc-2.3.3/include/systemc.h"
+	#include "CybusM_IF_SC.h"
     #include "stdio.h"
 	#include "math.h"
 

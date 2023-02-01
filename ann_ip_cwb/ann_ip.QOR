@@ -14,8 +14,8 @@ Cyber Synthesis Report
   FPGA Speed          : -
 
   Resource Utilization
-    Slice LUTs        :      8,225
-    Registers         :      4,883
+    Slice LUTs        :      8,353
+    Registers         :      4,922
     Block Memory Bits :    444,224
     DSPs              :         29
 
@@ -25,25 +25,25 @@ Cyber Synthesis Report
   Clock Period        :       10ns
   Critical Path Delay :    2.072ns
 
-  Net                 :      2,439
-  Pin Pair            :      7,700
+  Net                 :      2,503
+  Pin Pair            :      7,593
 
-  Port                :         47
-    In                :         36
-    Out               :         11
+  Port                :        139
+    In                :         92
+    Out               :         47
 
 ========================
 ; Resource Utilization ;
 ========================
 
   Total :
-    Slice LUTs        :      8,225
-    Registers         :      4,883
+    Slice LUTs        :      8,353
+    Registers         :      4,922
     Block Memory Bits :    444,224
     DSPs              :         29
 
   ann_ip :
-    Slice LUTs        :          2
+    Slice LUTs        :          6
     Registers         :         13
     Block Memory Bits :    441,152
     DSPs              :          0
@@ -57,8 +57,8 @@ Cyber Synthesis Report
 
   ann_ip_ann_load :
     Count             :          1
-    Slice LUTs        :        280
-    Registers         :        160
+    Slice LUTs        :        404
+    Registers         :        199
     Block Memory Bits :          0
     DSPs              :          0
 
@@ -71,7 +71,7 @@ Cyber Synthesis Report
                                                          Bits
     ------------------------------------------------------------------
     ann_ip_ann_activate  12,653  4,710   0.00         -   3,072      1
-    ann_ip_ann_load         440    160   0.00         -       0      1
+    ann_ip_ann_load         603    199   0.00         -       0      1
 
   Unused Functional Units :
     ---------------------------------------------------
@@ -167,9 +167,9 @@ Cyber Synthesis Report
       Name                 / Port [Signal              ]   (ns)   (ns)  Stage
       -----------------------------------------------------------------------
       pix_loading_done_r   / dout [                    ]      -    0.00     0
-      _NMUX_120            / o1   [pix_loading_done    ]   1.04    1.04     1
+      _NMUX_136            / o1   [pix_loading_done    ]   1.04    1.04     1
       ann_activate_inst    / o12  [ann_activate_inst.ann_processing_done_we]   0.00    1.04     1
-      _NMUX_126            / o1   [ann_processing_done ]   1.04    2.07     2
+      _NMUX_142            / o1   [ann_processing_done ]   1.04    2.07     2
       ann_processing_done_r / din  [                    ]      -    2.07     2
 
   False Path                    :  Unchecked
@@ -181,20 +181,21 @@ Cyber Synthesis Report
 ; Wire ;
 ========
 
-  Total Net Count      :    2,439
-  Total Pin Pair Count :    7,700
-  Const Fanout         :        0
+  Total Net Count      :    2,503
+  Total Pin Pair Count :    7,593
+  Const Fanout         :       32
 
   Net Count :
          Bit       Net    Bit*Net
      ----------------------------
-           1        20         20
+           1        33         33
            6         2         12
           10         5         50
           14         2         28
-          32         7        224
+          16         1         16
+          32         8        256
      ----------------------------
-       Total                  334
+       Total                  395
 
   Pin Pair Count :
       Fanout    Bit    Count   Subtotal
@@ -203,20 +204,21 @@ Cyber Synthesis Report
            6      1        1          6
            2     10        1         20
            2      1        3          6
-           1     32        7        224
+           1     32        8        256
+           1     16        1         16
            1     14        2         28
            1     10        4         40
            1      6        2         12
-           1      1       15         15
+           1      1       28         28
     -----------------------------------
-       Total                        363
+       Total                        424
 
   Fanout for Consts:
       Value    Fanout
-          0         0
+          0        32
           1         0
     ------------------
-      Total         0
+      Total        32
 
   Clock Fanout:
       Name                         Count
@@ -233,10 +235,10 @@ Cyber Synthesis Report
     Fanin: (Top 10 Registers)
       Register Name                              Cone Size
       ----------------------------------------------------
-      ann_out_r(9..0)                                   10
-      ann_op_en_r(0..0)                                 10
-      ann_processing_done_r(0..0)                       10
-      pix_loading_done_r(0..0)                           6
+      ann_out_r(9..0)                                   13
+      ann_op_en_r(0..0)                                 13
+      ann_processing_done_r(0..0)                       13
+      pix_loading_done_r(0..0)                           9
 
     Fanout: (Top 10 Registers)
       Register Name                              Cone Size
@@ -253,6 +255,7 @@ Cyber Synthesis Report
       Net Name                                    Total      Max
       -----------------------------------------------------------------
       data_in(31..0)                                 32        1 (32bit)
+      ANN_SA_CBM_write_data(31..0)                   32        1 (32bit)
       ann_weights.RD1(31..0)                         32        1 (32bit)
       ann_biases.RD1(31..0)                          32        1 (32bit)
       pix_in.RD1(31..0)                              32        1 (32bit)
@@ -260,13 +263,14 @@ Cyber Synthesis Report
       ann_load_inst.ann_biases_MEMB32W42_WD2(31..0)       32        1 (32bit)
       ann_load_inst.pix_in_MEMB32W784_WD2(31..0)       32        1 (32bit)
       ann_out_r(9..0)                                20        2 (10bit)
+      ANN_SA_CBM_addr(15..0)                         16        1 (16bit)
       ann_load_inst.ann_weights_MEMB32W12960_WA2(13..0)       14        1 (14bit)
       ann_activate_inst.ann_weights_MEMB32W12960_RA1(13..0)       14        1 (14bit)
       clk(0..0)                                      12       12 ( 1bit)
       ann_activate_inst.ann_out_wd(9..0)             10        1 (10bit)
       ann_load_inst.pix_in_MEMB32W784_WA2(9..0)       10        1 (10bit)
       ann_activate_inst.pix_in_MEMB32W784_RA1(9..0)       10        1 (10bit)
-      _NMUX_82(9..0)                                 10        1 (10bit)
+      _NMUX_98(9..0)                                 10        1 (10bit)
       rst(0..0)                                       6        6 ( 1bit)
       ann_load_inst.ann_biases_MEMB32W42_WA2(5..0)        6        1 ( 6bit)
       ann_activate_inst.ann_biases_MEMB32W42_RA1(5..0)        6        1 ( 6bit)
@@ -274,9 +278,7 @@ Cyber Synthesis Report
       ann_processing_done(0..0)                       2        2 ( 1bit)
       ann_op_en_r(0..0)                               2        2 ( 1bit)
       pix_en(0..0)                                    1        1 ( 1bit)
-      cfg_en(0..0)                                    1        1 ( 1bit)
-      ann_activate_inst.ann_out_we(0..0)              1        1 ( 1bit)
-      ann_activate_inst.ann_op_en_wd(0..0)            1        1 ( 1bit)
+      ANN_SA_CBM_read_req(0..0)                       1        1 ( 1bit)
 
     Top 25 Nets
     sorted by "Max" (Maximum Fanout)
@@ -289,24 +291,24 @@ Cyber Synthesis Report
       ann_processing_done(0..0)                       2        2 ( 1bit)
       ann_op_en_r(0..0)                               2        2 ( 1bit)
       data_in(31..0)                                 32        1 (32bit)
+      ANN_SA_CBM_write_data(31..0)                   32        1 (32bit)
       ann_weights.RD1(31..0)                         32        1 (32bit)
       ann_biases.RD1(31..0)                          32        1 (32bit)
       pix_in.RD1(31..0)                              32        1 (32bit)
       ann_load_inst.ann_weights_MEMB32W12960_WD2(31..0)       32        1 (32bit)
       ann_load_inst.ann_biases_MEMB32W42_WD2(31..0)       32        1 (32bit)
       ann_load_inst.pix_in_MEMB32W784_WD2(31..0)       32        1 (32bit)
+      ANN_SA_CBM_addr(15..0)                         16        1 (16bit)
       ann_load_inst.ann_weights_MEMB32W12960_WA2(13..0)       14        1 (14bit)
       ann_activate_inst.ann_weights_MEMB32W12960_RA1(13..0)       14        1 (14bit)
       ann_activate_inst.ann_out_wd(9..0)             10        1 (10bit)
       ann_load_inst.pix_in_MEMB32W784_WA2(9..0)       10        1 (10bit)
       ann_activate_inst.pix_in_MEMB32W784_RA1(9..0)       10        1 (10bit)
-      _NMUX_82(9..0)                                 10        1 (10bit)
+      _NMUX_98(9..0)                                 10        1 (10bit)
       ann_load_inst.ann_biases_MEMB32W42_WA2(5..0)        6        1 ( 6bit)
       ann_activate_inst.ann_biases_MEMB32W42_RA1(5..0)        6        1 ( 6bit)
       pix_en(0..0)                                    1        1 ( 1bit)
-      cfg_en(0..0)                                    1        1 ( 1bit)
-      ann_activate_inst.ann_out_we(0..0)              1        1 ( 1bit)
-      ann_activate_inst.ann_op_en_wd(0..0)            1        1 ( 1bit)
+      ANN_SA_CBM_read_req(0..0)                       1        1 ( 1bit)
 
 ================
 ; Primary Port ;
@@ -316,7 +318,17 @@ Cyber Synthesis Report
     ------------------------------
       data_in           in     32
       pix_en            in      1
-      cfg_en            in      1
+      ANN_SA_CBM_read_data  out    32
+      ANN_SA_CBM_read_req  in      1
+      ANN_SA_CBM_write_req  in      1
+      ANN_SA_CBM_addr   in     16
+      ANN_SA_CBM_size   in      3
+      ANN_SA_CBM_write_data  in     32
+      ANN_SA_CBM_hmaster  in      4
+      ANN_SA_CBM_busy   out     1
+      ANN_SA_CBM_error  out     1
+      ANN_SA_CBM_retry  out     1
+      ANN_SA_CBM_split  out     1
       ann_out           out    10
       ann_op_en         out     1
 

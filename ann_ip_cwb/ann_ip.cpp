@@ -5,6 +5,7 @@ void ann_ip::ann_load() {
 
 	int weight_cnt 	= 0x0;
 	int bias_cnt	= 0x0;
+    CBM_Req_Stat<> 	ann_stat;
 	
 	ann_configure_done = 0x0;
 	pix_loading_done = 0x0;
@@ -16,6 +17,8 @@ void ann_ip::ann_load() {
     
 	
 	while(true) {
+
+		ANN_SA.poll_req(&ann_stat);
 
 		// Loading the weights
 		if((weight_cnt == ANN_WEIGHTS) & (bias_cnt == ANN_BIASES)) {
@@ -34,23 +37,30 @@ void ann_ip::ann_load() {
 		}
 		
 		
-        if (cfg_en) {
+        //if (cfg_en) {
+        if ((ann_stat.req == CBM_WRITE_REQ) & (ann_stat.addr.range(15,0) == 0x4200)) {
+         	ANN_SA.set_response(CBM_OKAY);
    
 			if (weight_cnt == ANN_WEIGHTS) {
 				//ann_biases[bias_cnt] = cwb::data2float(data_in.read());
-				ann_biases[bias_cnt] = data_in.read();
+				//ann_biases[bias_cnt] = data_in.read();
+				ann_biases[bias_cnt]   = ANN_SA.get_data();
 				bias_cnt = bias_cnt + 0x1;
 			}
 			else {
 				//ann_weights[weight_cnt] = cwb::data2float(data_in.read());
-				ann_weights[weight_cnt] = data_in.read();
+				//ann_weights[weight_cnt] = data_in.read();
+				ann_weights[weight_cnt]   = ANN_SA.get_data();
 				weight_cnt = weight_cnt + 0x1;
 			}
 		}
 
 		// Load the pixels
         else if (pix_en) {
+        //else if ((ann_stat.req == CBM_WRITE_REQ) & (ann_stat.addr.range(15,0) == 0x4400)) {
+        	//ANN_SA.set_response(CBM_OKAY);
 			
+			//pix_in[pix_cnt] = ANN_SA.get_data();
 			pix_in[pix_cnt] = (double)data_in.read();
 			pix_cnt = pix_cnt + 1;
 			pix_loading_done = 0x0;

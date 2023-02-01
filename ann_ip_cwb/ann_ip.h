@@ -12,11 +12,14 @@ SC_MODULE (ann_ip) {
     sc_in<bool> 	rst;
 
 
+    // AHB bus slave interfaces
+    ahb_slave_if<>  				ANN_SA;
+
 	//  Data in
 	sc_in< sc_fixed<32,8> >  		data_in;
 
 	sc_in< bool >					pix_en;
-	sc_in< bool >					cfg_en;
+	//sc_in< bool >					cfg_en;
 
     // Output
 	sc_out< sc_uint<OUP_NEURONS> >  ann_out;

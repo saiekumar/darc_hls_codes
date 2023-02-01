@@ -11,7 +11,14 @@ void tb_ANN::send_images(){
 
 	data_in.write(0x0);
 	pix_en.write(0x0);
- 	cfg_en.write(0x0);
+ 	//cfg_en.write(0x0);
+
+	SA_CBM_read_req.write(0x0);
+	SA_CBM_write_req.write(0x0);
+ 	SA_CBM_addr.write(0x0);
+	SA_CBM_size.write(0x0);
+ 	SA_CBM_write_data.write(0x0);
+	SA_CBM_hmaster.write(0x0);
 
 	std::ifstream ifs("images.txt");
 	std::ifstream ifsout("outputs.txt");
@@ -44,13 +51,13 @@ void tb_ANN::send_images(){
 			
 			data_in.write(buffer);
 			pix_en.write(0x1);
-			cfg_en.write(0x0); 	//what does cfg mean?
+			//cfg_en.write(0x0); 	//what does cfg mean?
     		wait();
 		}
 
 		data_in.write(0x0);
 		pix_en.write(0x0);
-		cfg_en.write(0x0);
+		//cfg_en.write(0x0);
 
 		while(op_en == 0) {
 			op_en = ann_op_en.read();
