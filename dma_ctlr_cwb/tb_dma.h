@@ -1,5 +1,5 @@
 
-#include "define.h"
+#include "define_dma.h"
 
 
 #ifndef TB_DMA_H_

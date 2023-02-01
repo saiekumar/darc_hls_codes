@@ -2,7 +2,7 @@
 #define ANN_IP_H_
 
 
-#include "define.h"
+#include "define_ann_ip.h"
 
 
 SC_MODULE (ann_ip) {

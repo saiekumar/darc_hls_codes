@@ -1,5 +1,5 @@
 
-#include "define.h"
+#include "define_spi.h"
 
 
 #ifndef TB_SPI_H_

@@ -2,7 +2,7 @@
 #define DMA_CTLR_H_
 
 
-#include "define.h"
+#include "define_dma.h"
 
 
 SC_MODULE (dma_ctlr) {

@@ -2,7 +2,7 @@
 #define SPI_CTLR_H_
 
 
-#include "define.h"
+#include "define_spi.h"
 
 
 SC_MODULE (spi_ctlr) {
