@@ -8,26 +8,25 @@
 # 12/25/2022    Sai Marri         1.0         	Initial makefile
 #============================================================================
 
-gen_bus :
-	CybusM -GUI -c1000 -lb "${CYBER_PATH}/packages/zynq-1.BLIB" -lfl "${CYBER_PATH}/packages/zynq-1.FLIB" +lfl "${CYBER_PATH}/packages/zynq-1-float.FLIB" "/home/sai/GIT_reps/darc_hls_codes/dma_ctlr_cwb/soc_bus.bdef"
-
 pars : 
 	scpars -EE   -info_base_name scpars  "dma_ctlr.cpp"
 
 gen_scripts :
-	bdltran -EE -c1000 -sN -Ztop_module -Zdup_reset=YES -tcio -EE -lb /eda/cwb/cyber_611/LINUX/packages/zynq-1.BLIB -lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1.FLIB +lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1-float.FLIB dma_ctlr.IFF -Zmem_reg_locate=outside -Zmlib_mcnt_out option -EE -c1000 -sN -Ztop_module -Zdup_reset=YES -tcio -EE -lb /eda/cwb/cyber_611/LINUX/packages/zynq-1.BLIB -lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1.FLIB +lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1-float.FLIB dma_ctlr.IFF -Zmem_reg_locate=outside -Zmlib_mcnt_out -sN -tcio -Zreset_state=NO
-	bdltran -EE -c1000 -sN -Ztop_module -Zdup_reset=YES -tcio -EE -lb /eda/cwb/cyber_611/LINUX/packages/zynq-1.BLIB -lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1.FLIB +lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1-float.FLIB -lml dma_ctlr-auto.MLIB -lmc dma_ctlr-auto.MCNT dma_ctlr.IFF -Zmem_reg_locate=outside -Zflib_fcnt_out option -EE -c1000 -sN -Ztop_module -Zdup_reset=YES -tcio -EE -lb /eda/cwb/cyber_611/LINUX/packages/zynq-1.BLIB -lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1.FLIB +lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1-float.FLIB -lml dma_ctlr-auto.MLIB -lmc dma_ctlr-auto.MCNT dma_ctlr.IFF -Zmem_reg_locate=outside -Zflib_fcnt_out -sN -tcio -Zreset_state=NO
+	bdltran -EE -c1000 -sN -Zdup_reset=YES -Zshared_reg_lutram_re_gen -tcio -EE -lb /eda/cwb/cyber_611/LINUX/packages/zynq-1.BLIB -lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1.FLIB  dma_ctlr_dma_cfg_regs.IFF -Zflib_fcnt_out option -EE -c1000 -sN -Zdup_reset=YES -Zshared_reg_lutram_re_gen -tcio -EE -lb /eda/cwb/cyber_611/LINUX/packages/zynq-1.BLIB -lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1.FLIB  dma_ctlr_dma_cfg_regs.IFF -Zflib_fcnt_out -tcio -Zlower_module
+	bdltran -EE -c1000 -sN -Zdup_reset=YES -tcio -EE -lb /eda/cwb/cyber_611/LINUX/packages/zynq-1.BLIB -lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1.FLIB +lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1-float.FLIB dma_ctlr_dma_trans.IFF -Zflib_fcnt_out option -EE -c1000 -sN -Zdup_reset=YES -tcio -EE -lb /eda/cwb/cyber_611/LINUX/packages/zynq-1.BLIB -lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1.FLIB +lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1-float.FLIB dma_ctlr_dma_trans.IFF -Zflib_fcnt_out -tcio -Zlower_module
 
 synth :
-	bdltran  -EE   -c1000 -s -Zresource_fcnt=GENERATE -Zresource_mcnt=GENERATE -Zdup_reset=YES -Zfolding_sharing=inter_stage -tcio -EE -lb /eda/cwb/cyber_611/LINUX/packages/zynq-1.BLIB -lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1.FLIB +lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1-float.FLIB dma_ctlr_dma_load.IFF option -EE -c1000 -s -Zresource_fcnt=GENERATE -Zresource_mcnt=GENERATE -Zdup_reset=YES -Zfolding_sharing=inter_stage -tcio -EE -lb /eda/cwb/cyber_611/LINUX/packages/zynq-1.BLIB -lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1.FLIB +lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1-float.FLIB dma_ctlr_dma_load.IFF -tcio -Zlower_module
-	cwbxmlgen -EE  dma_ctlr_dma_load_C.IFF
-	bdltran  -EE   -c1000 -s -Zresource_fcnt=GENERATE -Zresource_mcnt=GENERATE -Zdup_reset=YES -Zfolding_sharing=inter_stage -tcio -EE -lb /eda/cwb/cyber_611/LINUX/packages/zynq-1.BLIB -lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1.FLIB +lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1-float.FLIB dma_ctlr_dma_activate.IFF option -EE -c1000 -s -Zresource_fcnt=GENERATE -Zresource_mcnt=GENERATE -Zdup_reset=YES -Zfolding_sharing=inter_stage -tcio -EE -lb /eda/cwb/cyber_611/LINUX/packages/zynq-1.BLIB -lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1.FLIB +lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1-float.FLIB dma_ctlr_dma_activate.IFF -tcio -Zlower_module
-	cwbxmlgen -EE  dma_ctlr_dma_activate_C.IFF
-	bdltran  -EE   -c1000 -sN -Zresource_fcnt=GENERATE -Zresource_mcnt=GENERATE -Ztop_module -Zdup_reset=YES -tcio -EE -lb /eda/cwb/cyber_611/LINUX/packages/zynq-1.BLIB -lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1.FLIB +lfl dma_ctlr-auto.FLIB -lfc dma_ctlr-auto.FCNT -lml dma_ctlr-auto.MLIB -lmc dma_ctlr-auto.MCNT -Zmem_reg_locate=outside dma_ctlr.IFF option -EE -c1000 -sN -Zresource_fcnt=GENERATE -Zresource_mcnt=GENERATE -Ztop_module -Zdup_reset=YES -tcio -EE -lb /eda/cwb/cyber_611/LINUX/packages/zynq-1.BLIB -lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1.FLIB +lfl dma_ctlr-auto.FLIB -lfc dma_ctlr-auto.FCNT -lml dma_ctlr-auto.MLIB -lmc dma_ctlr-auto.MCNT -Zmem_reg_locate=outside dma_ctlr.IFF -sN -tcio -Zreset_state=NO
-	cwbxmlgen  -EE  dma_ctlr_C.IFF
-	veriloggen -EE  dma_ctlr_dma_load_E.IFF
-	veriloggen -EE  dma_ctlr_dma_activate_E.IFF	
-	veriloggen -EE  dma_ctlr_E.IFF
+	bdltran   -EE  -c1000 -sN -Zresource_fcnt=GENERATE -Zresource_mcnt=GENERATE -Zdup_reset=YES -Zshared_reg_lutram_re_gen -tcio -EE -lb /eda/cwb/cyber_611/LINUX/packages/zynq-1.BLIB -lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1.FLIB  dma_ctlr_dma_cfg_regs.IFF option -EE -c1000 -sN -Zresource_fcnt=GENERATE -Zresource_mcnt=GENERATE -Zdup_reset=YES -Zshared_reg_lutram_re_gen -tcio -EE -lb /eda/cwb/cyber_611/LINUX/packages/zynq-1.BLIB -lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1.FLIB  dma_ctlr_dma_cfg_regs.IFF -tcio -Zlower_module
+	cwbxmlgen -EE  dma_ctlr_dma_cfg_regs_C.IFF
+	veriloggen -EE    dma_ctlr_dma_cfg_regs_E.IFF
+	bdltran   -EE  -c1000 -sN -Zresource_fcnt=GENERATE -Zresource_mcnt=GENERATE -Zdup_reset=YES -Zshared_reg_lutram_re_gen -tcio -EE -lb /eda/cwb/cyber_611/LINUX/packages/zynq-1.BLIB -lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1.FLIB  dma_ctlr_dma_trans.IFF option -EE -c1000 -sN -Zresource_fcnt=GENERATE -Zresource_mcnt=GENERATE -Zdup_reset=YES -Zshared_reg_lutram_re_gen -tcio -EE -lb /eda/cwb/cyber_611/LINUX/packages/zynq-1.BLIB -lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1.FLIB  dma_ctlr_dma_trans.IFF -tcio -Zlower_module
+	cwbxmlgen -EE  dma_ctlr_dma_trans_C.IFF
+	veriloggen -EE    dma_ctlr_dma_trans_E.IFF
+	bdltran -EE -c1000 -sN -Ztop_module -Zdup_reset=YES -tcio -EE -lb /eda/cwb/cyber_611/LINUX/packages/zynq-1.BLIB -lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1.FLIB +lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1-float.FLIB dma_ctlr.IFF -Zflib_fcnt_out option -EE -c1000 -sN -Ztop_module -Zdup_reset=YES -tcio -EE -lb /eda/cwb/cyber_611/LINUX/packages/zynq-1.BLIB -lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1.FLIB +lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1-float.FLIB dma_ctlr.IFF -Zflib_fcnt_out -sN -tcio -Zreset_state=NO
+	bdltran  -EE   -c1000 -sN -Zresource_fcnt=GENERATE -Zresource_mcnt=GENERATE -Ztop_module -Zdup_reset=YES -tcio -EE -lb /eda/cwb/cyber_611/LINUX/packages/zynq-1.BLIB -lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1.FLIB  dma_ctlr.IFF option -EE -c1000 -sN -Zresource_fcnt=GENERATE -Zresource_mcnt=GENERATE -Ztop_module -Zdup_reset=YES -tcio -EE -lb /eda/cwb/cyber_611/LINUX/packages/zynq-1.BLIB -lfl /eda/cwb/cyber_611/LINUX/packages/zynq-1.FLIB  dma_ctlr.IFF -sN -tcio -Zreset_state=NO
+	cwbxmlgen -EE  dma_ctlr_C.IFF
+	veriloggen -EE    dma_ctlr_dma_cfg_regs_E.IFF
+	veriloggen -EE    dma_ctlr_E.IFF
 
 cwb :
 	make pars 
