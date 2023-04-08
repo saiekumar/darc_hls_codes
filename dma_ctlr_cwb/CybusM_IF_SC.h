@@ -7,7 +7,7 @@
 
 // configurable system parameters
 #define CBM_ADDRESS_RANGE 16
-#define CBM_DATA_RANGE 16
+#define CBM_DATA_RANGE 32
 
 #define CBM_LEN_RANGE 11
 #define CBM_BURST_RET_RANGE 11

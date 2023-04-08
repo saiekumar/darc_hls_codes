@@ -2,7 +2,7 @@ defbus AMBA_AHB {
 	width address 		= 16;
 	width data 			= 32;
 	mode arbiter_rule 	= RoundRobin;
-	module master 		= {DMA_MA};
+	module master 		= {DMA_MA, CPU_MA};
 	module slave 		= {SPI_SA, DMA_SA, ANN_SA};
 } soc_bus;
 
