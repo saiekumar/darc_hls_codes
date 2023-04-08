@@ -12,6 +12,13 @@ module AMBA_AHB_MASTER {
 	mode data_transfer 	= Direct;
 	mode clock 			= Enable;
 	mode reset 			= Enable;
+} CPU_MA;
+
+module AMBA_AHB_MASTER {
+	mode burst 			= Disable;
+	mode data_transfer 	= Direct;
+	mode clock 			= Enable;
+	mode reset 			= Enable;
 } DMA_MA;
 
 module AMBA_AHB_SLAVE {

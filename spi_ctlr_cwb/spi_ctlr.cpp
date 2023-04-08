@@ -27,7 +27,7 @@ void spi_ctlr::spi_trans() {
 
 	sc_uint<8> 	spi_cmd;
 	sc_uint<16> spi_addr;
-	sc_uint<16> spi_data;
+	sc_uint<32> spi_data;
 	sc_uint<16> i;
 
     /* checks the AHB slave transacions & reads/writes to config registers */
@@ -91,7 +91,7 @@ void spi_ctlr::spi_trans() {
 			wait(1);
 
 			/* receiving the SPI data */
-			for( i = 16; i > 0; i = i - 4) {
+			for( i = 32; i > 0; i = i - 4) {
 				spi_data[i-1] = spi_miso3.read();
 				spi_data[i-2] = spi_miso2.read();
 				spi_data[i-3] = spi_miso1.read();
@@ -111,7 +111,7 @@ void spi_ctlr::spi_trans() {
         else if (stat.req == CBM_WRITE_REQ) {
 			SPI_SA.set_response(CBM_BUSY);
 			spi_addr = stat.addr.range(15,0);
-			spi_data = SPI_SA.get_data()(15,0);
+			spi_data = SPI_SA.get_data();
 			
 			spi_cs.write(0x0);
 			wait();
@@ -147,7 +147,7 @@ void spi_ctlr::spi_trans() {
 			wait(1);
 
 			/* transmitting the SPI data */
-			for( i = 16; i > 0; i = i - 4) {
+			for( i = 32; i > 0; i = i - 4) {
 				spi_mosi3.write(spi_data[i-1]);
 				spi_mosi2.write(spi_data[i-2]);
 				spi_mosi1.write(spi_data[i-3]);
