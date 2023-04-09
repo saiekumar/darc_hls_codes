@@ -104,89 +104,56 @@ void ann_ip::ann_activate() {
 			continue;
 		}
 
-
-		// ---------- Layer-1 computation -------------
-		
-		weight_offset = 0x0;
-		bias_offset   = 0x0;
-
-		for (int k = 0; k < L1_NEURONS; k = k + 1) {
-			ann_act[0][k] = ann_biases[bias_offset + k];
-		}
-		
 		/* Cyber unroll_times = 1 */
-		for (int j = 1; j < INP_NEURONS-1; j = j + 1) {				// Layer-0 (input layer)
-		
-			/* Cyber unroll_times = all */	
-			for (int k = 0; k < L1_NEURONS; k = k + 1) {			// Layer-1 loop
-				weight_index = weight_offset + (j * L1_NEURONS) + k;
-				ann_act[0][k] = ann_act[0][k] + (ann_weights[weight_index] * pix_in[j]);
+		for (int i = 0; i <= ANN_LAYERS ; i = i+1) {				// i defines NN layers
+			if(i == 0) {
+				weight_offset = 0x0;
+				bias_offset   = 0x0;
 			}
-		}
-		
-		/* Cyber unroll_times = all */
-		for (int k = 0; k < L1_NEURONS; k = k + 1) {
-			ann_act[0][k] =  (ann_act[0][k] < 0) ? 0 : 1; 
-		}
-		wait();
-		
-
-		// ---------- Layer-2 computation -------------
-
-		weight_offset = weight_offset + INP_NEURONS * L1_NEURONS;
-		bias_offset   = bias_offset + L1_NEURONS;
-
-		for (int k = 0; k < L2_NEURONS; k = k + 1) {
-			ann_act[1][k] = ann_biases[bias_offset + k];
-		}
-
-		/* Cyber unroll_times = 1 */
-		for (int j = 1; j < L1_NEURONS-1; j = j + 1) {				// Layer-1 (input layer)
-		
-			/* Cyber unroll_times = all */	
-			for (int k = 0; k < L2_NEURONS; k = k + 1) {			// Layer-2 loop
-				weight_index = weight_offset + (j * L2_NEURONS) + k;
-				ann_act[1][k] = ann_act[1][k] + (ann_weights[weight_index] * ann_act[0][j]);
+			else {
+			    weight_offset = weight_offset + NEURON_CNT(i-1) * NEURON_CNT(i);
+			    bias_offset   = bias_offset + NEURON_CNT(i);
 			}
-		}
-
-		/* Cyber unroll_times = all */
-		for (int k = 0; k < L2_NEURONS; k = k + 1) {
-			ann_act[1][k] =  (ann_act[1][k] < 0) ? 0 : 1; 
-		}
-		wait();
-
-
-
-		// ---------- Layer-3 (output) computation -------------
-		weight_offset = weight_offset + L1_NEURONS * L2_NEURONS;
-		bias_offset   = bias_offset + L2_NEURONS;
-
-		for (int k = 0; k < L3_NEURONS; k = k + 1) {
-			ann_act[2][k] = ann_biases[bias_offset + k];
-		}
-
-		/* Cyber unroll_times = 1 */
-		for (int j = 1; j < L2_NEURONS-1; j = j + 1) {				// Layer-2 (input layer)
-		
-			/* Cyber unroll_times = all */	
-			for (int k = 0; k < L3_NEURONS; k = k + 1) {			// Layer-3 loop
-				weight_index = weight_offset + (j * L3_NEURONS) + k;
-				ann_act[2][k] = ann_act[2][k] + (ann_weights[weight_index] * ann_act[1][j]);
-			}
-		}
-
-		/* Cyber unroll_times = all */
-		for (int k = 0; k < L3_NEURONS; k = k + 1) {
-			softmax_sum = softmax_sum + exp(ann_act[2][k]);
-		}
-		wait();
-
-
 			
-		// SOFTMAX LAYER
+			/* Cyber unroll_times = 1 */
+			for (int j = 0; j < NEURON_CNT(i); j = j + 1) {		// j defines the input layer/previous layer inputs
+
+				/* Cyber unroll_times = NUM_MACS */	
+				for (int k = 0; k < NEURON_CNT(i+1); k = k + 1) {			// k defines the existing layer neurons or output neurons
+
+					if (j == 0) {
+						ann_act[i][k] = ann_biases[bias_offset + k];
+					}
+
+					weight_index = weight_offset + (j * NEURON_CNT(i+1)) + k;
+					if(i == 0) {
+						ann_act[0][k] = ann_act[0][k] + (ann_weights[weight_index] * pix_in[j]);
+					} else {
+						ann_act[i][k] = ann_act[i][k] + (ann_weights[weight_index] * ann_act[i-1][j]);
+					}
+					
+					// activation applied on the last iteration
+					if( j == (NEURON_CNT(i) - 1)) {
+
+						if(i != ANN_LAYERS) { 
+							//RELU ACTIVATION 
+							ann_act[i][k] =  (ann_act[i][k] < 0) ? 0 : 1; 
+						}
+						else {
+							softmax_sum = softmax_sum + exp(ann_act[ANN_LAYERS][k]);
+						}
+					}
+					wait();
+				}
+				wait();
+			}
+			wait();
+		}
+		wait();
+
 		max_p = 0;
 
+		// SOFTMAX LAYER
 		/* Cyber unroll_times = all */
 		for (int i = 0; i < OUP_NEURONS ; i = i+1) {
 			ann_act[ANN_LAYERS][i] = exp(ann_act[ANN_LAYERS][i])/softmax_sum;
