@@ -115,7 +115,7 @@ void ann_ip::ann_activate() {
 		}
 		
 		/* Cyber unroll_times = 1 */
-		for (int j = 1; j < INP_NEURONS-1; j = j + 1) {				// Layer-0 (input layer)
+		for (int j = 0; j < INP_NEURONS; j = j + 1) {				// Layer-0 (input layer)
 		
 			/* Cyber unroll_times = all */	
 			for (int k = 0; k < L1_NEURONS; k = k + 1) {			// Layer-1 loop
@@ -141,7 +141,7 @@ void ann_ip::ann_activate() {
 		}
 
 		/* Cyber unroll_times = 1 */
-		for (int j = 1; j < L1_NEURONS-1; j = j + 1) {				// Layer-1 (input layer)
+		for (int j = 0; j < L1_NEURONS; j = j + 1) {				// Layer-1 (input layer)
 		
 			/* Cyber unroll_times = all */	
 			for (int k = 0; k < L2_NEURONS; k = k + 1) {			// Layer-2 loop
@@ -162,22 +162,22 @@ void ann_ip::ann_activate() {
 		weight_offset = weight_offset + L1_NEURONS * L2_NEURONS;
 		bias_offset   = bias_offset + L2_NEURONS;
 
-		for (int k = 0; k < L3_NEURONS; k = k + 1) {
+		for (int k = 0; k < OUP_NEURONS; k = k + 1) {
 			ann_act[2][k] = ann_biases[bias_offset + k];
 		}
 
 		/* Cyber unroll_times = 1 */
-		for (int j = 1; j < L2_NEURONS-1; j = j + 1) {				// Layer-2 (input layer)
+		for (int j = 0; j < L2_NEURONS; j = j + 1) {				// Layer-2 (input layer)
 		
 			/* Cyber unroll_times = all */	
-			for (int k = 0; k < L3_NEURONS; k = k + 1) {			// Layer-3 loop
-				weight_index = weight_offset + (j * L3_NEURONS) + k;
+			for (int k = 0; k < OUP_NEURONS; k = k + 1) {			// Layer-3 loop
+				weight_index = weight_offset + (j * OUP_NEURONS) + k;
 				ann_act[2][k] = ann_act[2][k] + (ann_weights[weight_index] * ann_act[1][j]);
 			}
 		}
 
 		/* Cyber unroll_times = all */
-		for (int k = 0; k < L3_NEURONS; k = k + 1) {
+		for (int k = 0; k < OUP_NEURONS; k = k + 1) {
 			softmax_sum = softmax_sum + exp(ann_act[2][k]);
 		}
 		wait();
@@ -189,11 +189,11 @@ void ann_ip::ann_activate() {
 
 		/* Cyber unroll_times = all */
 		for (int i = 0; i < OUP_NEURONS ; i = i+1) {
-			ann_act[ANN_LAYERS][i] = exp(ann_act[ANN_LAYERS][i])/softmax_sum;
+			ann_act[2][i] = exp(ann_act[2][i])/softmax_sum;
 
-		    if(ann_act[ANN_LAYERS][i] > max_p)
+		    if(ann_act[2][i] > max_p)
 		    {
-		    	max_p = ann_act[ANN_LAYERS][i];
+		    	max_p = ann_act[2][i];
 		    	ann_oup = i; //output the index with highest probability
 		    }
 		}
